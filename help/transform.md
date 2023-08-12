@@ -6,7 +6,7 @@ This plugin for the micro editor provides some text transformations
 There are no keybindings set, you have to add them manually if you need them. All command work on the current selection or, if nothing is selected, on the whole file. This plugin has no configuration and none of the commands have arguments.
 
 list of commands:
-| name                 | description                                                                |
+| command name         | description                                                                |
 | -------------------- | -------------------------------------------------------------------------- |
 | unique               | keeps only unique lines, simmilar to uniq commandline tool without sorting |
 | sort                 | sorts all lines                                                            |
