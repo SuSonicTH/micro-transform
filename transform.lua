@@ -101,9 +101,9 @@ local function line_to_columns(line, separator, remove_quoutes)
 	local ret = {}
 	local fieldstart = 1
 	repeat
-	    if line:find('^"', fieldstart) then
+	    if line:find('^%s*"', fieldstart) then
 			local a, c
-			local i  = fieldstart
+			local i  = line:find('"', fieldstart) 
 			repeat
 	        -- find closing quote
 		        a, i, c = line:find('"("?)', i + 1)
@@ -140,10 +140,10 @@ local function to_table(lines, from, remove_quoutes, to, prefix, suffix)
 	end
   
 	local space={}
-	local width={}
+	local header={}
 	for i,v in ipairs(max_width) do
 		space[i] = string.rep(" ", v)
-		width[i] = max_width[i] * -1
+		header[i] = string.rep("-", v)
 	end
 
 	local out = {}
@@ -151,33 +151,43 @@ local function to_table(lines, from, remove_quoutes, to, prefix, suffix)
 		local line ={}
 		if #columns>1 or columns[1]:len() > 0 then
 			for i,v in ipairs(columns) do
-				table.insert(line, string.sub(space[i]..v, width[i]))
+				table.insert(line, string.sub(v..space[i], 1, max_width[i]))
 			end
 			table.insert(out, prefix .. table.concat(line, to) .. suffix)
 		end
 	end
 
+	if to == ' | ' then
+		table.insert(out, 2, prefix .. table.concat(header, to) .. suffix)
+	end
 	return out
 end
 
 local function from_table(lines, from, to)
 	local out = {}
-	for _,line in ipairs(lines) do
-		local columns = line_to_columns(line, from, true)
-		local line = {}
 
+	if (from == '|') then
+		table.remove(lines, 2)
+	end
+	
+	for _,line in ipairs(lines) do
+		local columns = line_to_columns(line, from, false)
+		local retLine = {}
+				
 		for i,column in ipairs(columns) do
-			if from ~= '|' or i > 1 then 
-				column = trim(column)
-				if (column:find('"')) then
+			column = trim(column)
+			if from ~= '|' or (i > 1 and (i < #columns or column:len() > 0)) then 	
+				if column:sub(1,1) ~= '"' and column:find('"') then
+					micro.Log("1:>"..column.."<"..line..">")
 					column ='"' .. column:gsub('"','""') .. '"'
-				elseif (column:find(to)) then
+				elseif column:sub(1,1) ~= '"' and column:find(to) then
+					micro.Log("2:>"..column.."<")
 					column ='"' .. column .. '"'
 				end 
-				table.insert(line, column)
+				table.insert(retLine, column)
 			end
 		end
-		table.insert(out, table.concat(line, to))
+		table.insert(out, table.concat(retLine, to))
 	end
 
 	return out
@@ -193,6 +203,7 @@ function init()
     config.MakeCommand("csv-equal-width", function() replace_selection(function(lines) return to_table(lines, ',', false, ', ') end, true, true, false)  end, config.NoComplete)
     config.MakeCommand("table-to-csv", function() replace_selection(function(lines) return from_table(lines, '|', ',') end, true, true, false)  end, config.NoComplete)
     config.MakeCommand("csv-trim", function() replace_selection(function(lines) return from_table(lines, ',', ',') end, true, true, false)  end, config.NoComplete)
-  
+	config.MakeCommand("table-format", function() replace_selection(function(lines) return to_table(from_table(lines, '|', ','), ',', true, ' | ', '| ', ' |') end, true, true, false)  end, config.NoComplete)
+	
     config.AddRuntimeFile("transform", config.RTHelp, "help/transform.md")
 end
