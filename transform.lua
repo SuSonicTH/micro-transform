@@ -193,17 +193,32 @@ local function from_table(lines, from, to)
 	return out
 end
 
+local function lines_to_list(lines, separator, quoute)
+	if quoute then
+		return quoute .. table.concat(lines, quoute .. separator .. quoute) .. quoute
+	else
+		return table.concat(lines, separator)
+	end
+end
+
 function init()
-    config.MakeCommand("unique", function() replace_selection(unique, true, true, false)  end, config.NoComplete)
-    config.MakeCommand("sort", function() replace_selection(sort, true, true, false)  end, config.NoComplete)
-    config.MakeCommand("trim-right", function() replace_selection(each_line(trim_right), true, true, true)  end, config.NoComplete)
-    config.MakeCommand("trim-left", function() replace_selection(each_line(trim_left), true, true, true)  end, config.NoComplete)
-    config.MakeCommand("trim", function() replace_selection(each_line(trim), true, true, true)  end, config.NoComplete)
-    config.MakeCommand("csv-to-table", function() replace_selection(function(lines) return to_table(lines, ',', true, ' | ', '| ', ' |') end, true, true, false)  end, config.NoComplete)
-    config.MakeCommand("csv-equal-width", function() replace_selection(function(lines) return to_table(lines, ',', false, ', ') end, true, true, false)  end, config.NoComplete)
-    config.MakeCommand("table-to-csv", function() replace_selection(function(lines) return from_table(lines, '|', ',') end, true, true, false)  end, config.NoComplete)
-    config.MakeCommand("csv-trim", function() replace_selection(function(lines) return from_table(lines, ',', ',') end, true, true, false)  end, config.NoComplete)
-	config.MakeCommand("table-format", function() replace_selection(function(lines) return to_table(from_table(lines, '|', ','), ',', true, ' | ', '| ', ' |') end, true, true, false)  end, config.NoComplete)
-	
+    config.MakeCommand("unique", function() replace_selection(unique, true, true)  end, config.NoComplete)
+    config.MakeCommand("sort", function() replace_selection(sort, true, true)  end, config.NoComplete)
+
+    config.MakeCommand("trim-right", function() replace_selection(each_line(trim_right), true, true)  end, config.NoComplete)
+    config.MakeCommand("trim-left", function() replace_selection(each_line(trim_left), true, true)  end, config.NoComplete)
+    config.MakeCommand("trim", function() replace_selection(each_line(trim), true, true)  end, config.NoComplete)
+
+    config.MakeCommand("csv-to-table", function() replace_selection(function(lines) return to_table(lines, ',', true, ' | ', '| ', ' |') end, true, true)  end, config.NoComplete)
+    config.MakeCommand("csv-equal-width", function() replace_selection(function(lines) return to_table(lines, ',', false, ', ') end, true, true)  end, config.NoComplete)
+    config.MakeCommand("csv-trim", function() replace_selection(function(lines) return from_table(lines, ',', ',') end, true, true)  end, config.NoComplete)
+
+    config.MakeCommand("table-to-csv", function() replace_selection(function(lines) return from_table(lines, '|', ',') end, true, true)  end, config.NoComplete)
+	config.MakeCommand("table-format", function() replace_selection(function(lines) return to_table(from_table(lines, '|', ','), ',', true, ' | ', '| ', ' |') end, true, true)  end, config.NoComplete)
+
+	config.MakeCommand("lines-to-list", function() replace_selection(function(lines) return lines_to_list(lines,', ',false) end, true, true) end, config.NoComplete)
+	config.MakeCommand("lines-to-list-quoute-double", function() replace_selection(function(lines) return lines_to_list(lines,', ', '"') end, true, true) end, config.NoComplete)
+	config.MakeCommand("lines-to-list-quoute-sinlge", function() replace_selection(function(lines) return lines_to_list(lines,', ', "'") end, true, true) end, config.NoComplete)
+		
     config.AddRuntimeFile("transform", config.RTHelp, "help/transform.md")
 end

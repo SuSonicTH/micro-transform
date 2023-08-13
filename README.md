@@ -9,15 +9,18 @@ This plugin has no configuration and none of the commands have arguments.
 
 list of commands:
 
-| command name   | description                                                                |
-| -------------- | -------------------------------------------------------------------------- |
-| unique         | keeps only unique lines, simmilar to uniq commandline tool without sorting |
-| sort           | sorts all lines                                                            |
-| trim-right     | trim whitespace at the end of the line(s)                                  |
-| trim-left      | trim whitespace at the start of the line(s)                                |
-| trim           | trim whitespace at both ends of the line(s)                                |
-| csv-to-table   | converts comma separated values into table format                          |
-| csv-equal-with | inserts spaces to mace all columns in a CSV file the same length           |
-| csv-trim       | trims whitespaces in CSV files (undoes csv-equal-with)                     |
-| table-to-csv   | converts a (markdown) table to csv format                                  |
-| table-format   | reformats (equals widths) of an existing markdown table                    |
+| command name                | description                                                                |
+| --------------------------- | -------------------------------------------------------------------------- |
+| unique                      | keeps only unique lines, simmilar to uniq commandline tool without sorting |
+| sort                        | sorts all lines                                                            |
+| trim-right                  | trim whitespace at the end of the line(s)                                  |
+| trim-left                   | trim whitespace at the start of the line(s)                                |
+| trim                        | trim whitespace at both ends of the line(s)                                |
+| csv-to-table                | converts comma separated values into table format                          |
+| csv-equal-with              | inserts spaces to mace all columns in a CSV file the same length           |
+| csv-trim                    | trims whitespaces in CSV files (undoes csv-equal-with)                     |
+| table-to-csv                | converts a (markdown) table to csv format                                  |
+| table-format                | reformats (equals widths) of an existing markdown table                    |
+| lines-to-list               | converts multiple lines into a single line replacing newline with comma    |
+| lines-to-list-quoute-double | same as lines-to-list but puts each lines value into double quoutes        |
+| lines-to-list-quoute-sinlge | same as lines-to-list but puts each lines value into single quoutes        |
