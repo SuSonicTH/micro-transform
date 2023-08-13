@@ -178,10 +178,8 @@ local function from_table(lines, from, to)
 			column = trim(column)
 			if from ~= '|' or (i > 1 and (i < #columns or column:len() > 0)) then 	
 				if column:sub(1,1) ~= '"' and column:find('"') then
-					micro.Log("1:>"..column.."<"..line..">")
 					column ='"' .. column:gsub('"','""') .. '"'
 				elseif column:sub(1,1) ~= '"' and column:find(to) then
-					micro.Log("2:>"..column.."<")
 					column ='"' .. column .. '"'
 				end 
 				table.insert(retLine, column)
@@ -199,6 +197,34 @@ local function lines_to_list(lines, separator, quoute)
 	else
 		return table.concat(lines, separator)
 	end
+end
+
+local function lines_to_string(lines)
+	local out={}
+
+	if line[#lines] == "" then
+		table.remove(lines,#lines)
+	end
+
+	for i=1,#lines do
+		local eol = i<#lines and '\\n' or ''
+		out[#out+1] = lines[i]:gsub("\\","\\\\"):gsub("\t","\\t"):gsub('"','\"') .. eol
+	end
+	return '"' .. table.concat(out) .. '"'
+end
+
+local function lines_to_string_block(lines)
+	local out={}
+
+	if lines[#lines] == "" then
+		table.remove(lines,#lines)
+	end
+
+	for i=1,#lines do
+		local eol = i<#lines and '\\n" +' or '"'
+		out[#out+1] = '"' .. lines[i]:gsub("\\","\\\\"):gsub("\t","\\t"):gsub('"','\"') .. eol
+	end
+	return out
 end
 
 function init()
@@ -219,6 +245,9 @@ function init()
 	config.MakeCommand("lines-to-list", function() replace_selection(function(lines) return lines_to_list(lines,', ',false) end, true, true) end, config.NoComplete)
 	config.MakeCommand("lines-to-list-quoute-double", function() replace_selection(function(lines) return lines_to_list(lines,', ', '"') end, true, true) end, config.NoComplete)
 	config.MakeCommand("lines-to-list-quoute-sinlge", function() replace_selection(function(lines) return lines_to_list(lines,', ', "'") end, true, true) end, config.NoComplete)
-		
+
+	config.MakeCommand("lines-to-string", function() replace_selection(lines_to_string, true, true) end, config.NoComplete)
+	config.MakeCommand("lines-to-string-block", function() replace_selection(lines_to_string_block, true, true) end, config.NoComplete)
+	
     config.AddRuntimeFile("transform", config.RTHelp, "help/transform.md")
 end
