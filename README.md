@@ -26,3 +26,29 @@ list of commands:
 | lines-to-list-quoute-sinlge | same as lines-to-list but puts each lines value into single quoutes                         |
 | lines-to-string             | converts lines to a double quoted string, escapes backslash,double quoutes, tab and newline |
 | lines-to-string-block       | same as lines-to-string but keeps one string per line concatenated with +                   |
+
+
+## Installation
+add `https://raw.githubusercontent.com/SuSonicTH/micro-transform/master/repo.json` as a repo to your ~/.config/micro/settings.json
+
+sample setting.json
+```json
+{
+    "pluginrepos": [
+        "https://raw.githubusercontent.com/SuSonicTH/micro-transform/master/repo.json"
+    ]
+}
+```
+
+then you can install the plugin from the commandline with following command:
+
+```bash
+micro -plugin install transform
+```
+
+or, after restarting micro, execute following commant with *Ctrl-e*
+```
+plugin install transform
+```
+
+Alternativley you can just download  all files from the repository and put them under `~/.config/micro/plug/transform`
