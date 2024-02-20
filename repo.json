@@ -5,8 +5,8 @@
   "Tags": ["text", "manipulation", "sort", "unique", "trim", "csv", "table"],
   "Versions": [
     {
-      "Version": "0.1.0",
-      "Url": "https://github.com/SuSonicTH/micro-transform",
+      "Version": "0.1.1",
+      "Url": "https://github.com/SuSonicTH/micro-transform/archive/0.1.1.zip",
       "Require": {
         "micro": ">=2.0.0-1"
       }
