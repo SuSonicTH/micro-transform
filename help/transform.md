@@ -17,7 +17,7 @@ list of commands:
 | trim-left                   | trim whitespace at the start of the line(s)                                                 |
 | trim                        | trim whitespace at both ends of the line(s)                                                 |
 | csv-to-table                | converts comma separated values into table format                                           |
-| csv-equal-with              | inserts spaces to mace all columns in a CSV file the same length                            |
+| csv-equal-with              | inserts spaces to make all columns in a CSV file the same length                            |
 | csv-trim                    | trims whitespaces in CSV files (undoes csv-equal-with)                                      |
 | table-to-csv                | converts a (markdown) table to csv format                                                   |
 | table-format                | reformats (equals widths) of an existing markdown table                                     |
